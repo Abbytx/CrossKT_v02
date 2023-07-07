@@ -7,10 +7,10 @@ import numpy as np
 sys.path.extend(['../'])
 import time
 import argparse
-
+from Dataset import  adni2
 from sklearn import metrics
 from Models import CrossKTnet
-from Dataset import adni2, adni3
+
 
 
 def cacu_metric(output, y):
@@ -54,23 +54,12 @@ def log_configuration(args, num_train, num_valid, configs):
 
 
 def data_selection(dataset, split):
-    if  dataset == 'adni2':
-        train_data = adni2(split=split, mode='train')
-        valid_data = adni2(split=split, mode='test')
-        one_sample, ___ = train_data.__getitem__(1)
-        num_frame = one_sample.shape[-3]
-        num_point = one_sample.shape[-2]
-        num_class = valid_data.get_num_class()
-
-    elif dataset == 'adni3':
-        train_data = adni3(split=split, mode='train')
-        valid_data = adni3(split=split, mode='test')
-
-        one_sample, ___ = train_data.__getitem__(1)
-        num_frame = one_sample.shape[-3]
-        num_point = one_sample.shape[-2]
-
-        num_class = valid_data.get_num_class()
+    train_data = adni2(split=split, mode='train')
+    valid_data = adni2(split=split, mode='test')
+    one_sample, ___ = train_data.__getitem__(1)
+    num_frame = one_sample.shape[-3]
+    num_point = one_sample.shape[-2]
+    num_class = valid_data.get_num_class()
 
     return train_data, valid_data, num_frame, num_point, num_class,
 
@@ -131,7 +120,7 @@ def main(args):
 
 
         optimizer = torch.optim.SGD(My_mode.parameters(), lr=args.lr, momentum=args.momentum, nesterov=True,
-                                    weight_decay=0.0001)
+                                    weight_decay=args.lr_decay_rate)
         loss_F = nn.CrossEntropyLoss().to(args.device)
 
         Best_ACC= 0
@@ -187,7 +176,7 @@ def main(args):
             print_log( 'SEN: {:.5f}  SPE: {:.5f} auc:{:.5f}'.format(sen,spe, auc))
             all_best_ACC[k - 1] = Best_ACC
 
-            if ((epoch + 1) % int(args.save_freq) == 0):
+            if ((epoch + 1) % int(args.save_freq) == 0):  #save model
                 file_name = os.path.join('./check_points/{}_split{}_epoch_{}.pth'.format(args.dataset, k, epoch))  # checkpoint_dir
                 torch.save({
                     'epoch': epoch,
@@ -196,7 +185,7 @@ def main(args):
                 },
                     file_name)
 
-    with open('final_results.txt', 'a') as f:
+    with open('Final_results.txt', 'a') as f:
         localtime = time.asctime(time.localtime(time.time()))
 
         print(args.dataset, file=f)
@@ -213,18 +202,17 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()  # initialize the parameters of the model
 
-    parser.add_argument('--all_datasets', default=['adni2', 'adni3'])  # 'amci_nci','namci_nci'  ,'amci_nci','namci_nci'
-    parser.add_argument('--dataset', default='adni2', type=str)  # amci_nci  namci_nci amci_namci  amci_namci_nci
-    parser.add_argument('--k_folds', default=[1,2,3,4,5])
-
+    parser.add_argument('--all_datasets', default=['adni2', 'adni3'])
+    parser.add_argument('--dataset', default='adni2', type=str)
+    parser.add_argument('--k_folds', default=[5])  #[1,2,3,4,5]
     parser.add_argument('--batch_size', default=16, type=int)
     parser.add_argument('--lr', default=0.1, type=float)
     parser.add_argument('--momentum', type=float, default=0.9)
-    parser.add_argument('--lr_decay_rate', default=0.1, type=float)
+    parser.add_argument('--lr_decay_rate', default=0.0001, type=float)
 
 
     parser.add_argument('--device', default='cuda', type=str)
-    parser.add_argument('--gpu', default=1, type=int)
+    parser.add_argument('--gpu', default=0, type=int)
     parser.add_argument('--seed', default=1, type=int)
 
     parser.add_argument('--pre_trained', default=False, type=str)
@@ -234,27 +222,24 @@ if __name__ == '__main__':
 
     parser.add_argument('--start_epoch', default=0, type=int)
     parser.add_argument('--end_epoch', default=250, type=int)
-    parser.add_argument('--save_freq', default=1, type=int)  # 保存模型的频率
+    parser.add_argument('--save_freq', default=300, type=int)  # Frequency of saving models
     parser.add_argument('--step', default=[220, 230])
     parser.add_argument('--warm_up_epoch', default=5, type=int)
 
 
     parser.add_argument('--config_128', default= [[6, 12, False, 1, 32,7, 2],   # in_channels, out_channels, is_regularization, Conv_stride,chunk_kernel_size,total_chunk,num_subset
-                                                 [12, 12, True, 2, 1, 1, 2],
-                                                 [12, 12, False, 1, 32, 3, 2],
+                                                 [12, 12, True, 1, 64, 3, 2],
+                                                 [12, 12, False, 2, 1, 1, 2],
                                                  [12, 12, True, 2, 1, 1, 2],
                                                  [12, 12, True, 1, 1, 1, 2],])
 
-    # model parameters:
-    #parser.add_argument('--use_kernel_attention', default=1, type=int)  # [0,1,2]
+
     parser.add_argument('--sparsity_alpha', default=2, type=float)  # 0,[1~2]
     parser.add_argument('--kernel_size', default=1, type=int)
     parser.add_argument('--use_pes', default=True)
 
     args = parser.parse_args()
-    for each in args.all_datasets:
-        args.dataset = each
-        main(args)
+    main(args)
 
 
 
