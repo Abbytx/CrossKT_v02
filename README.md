@@ -4,7 +4,7 @@
 
 # overview
 
-
+![image].(framework.png)
 This code is for the paper: Learning Asynchronous Common and Individual Functional Brain Network for AD Diagnosis. 
 We report the best performance on ADNI datasets( https://adni.loni.usc.edu/).
  
