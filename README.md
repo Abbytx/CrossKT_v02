@@ -1,16 +1,21 @@
-# CrossKT_v02
-
-ADNI (Alzheimer's Disease Neuroimaging Initiative) is a research study that focuses on understanding and identifying the early changes associated with Alzheimer's disease. It is a collaborative effort involving researchers and institutions from around the world. The goal of ADNI is to collect and analyze various types of data, including clinical, genetic, imaging, and biomarker data, to improve our understanding of the disease and develop new methods for its detection and treatment.
- please find the original fMRI data set here: https://adni.loni.usc.edu/ 
- After obtaining the raw fMRI data, it is necessary to perform standard preprocessing for fMRI.
+# CrossKT: Learning Asynchronous Common and Individual Functional Brain Network for AD Diagnosis(MICCAI 2023)
 
 
+
+# overview
+
+
+This code is for the paper: Learning Asynchronous Common and Individual Functional Brain Network for AD Diagnosis. 
+We report the best performance on ADNI datasets( https://adni.loni.usc.edu/).
  
-# Training and Testing
+# Quick start (Train and Test)
 We provide the code for our model here (Model.py), and training and testing code（main.py). The specific model settings can be found in the article's documentation.
+We have provided a sample of preprocessed fMRI participant data in the Data folder (randomly generated using Python). Please replace it with real data for the actual experiment.
+Before training the model, please configure the dependencies in the `requirement.txt`.
+You can run `main.py` to quickly train and test the program.
 
 
-# 
+
 
 # Citation
 If you use our method or any part of it in your research, please cite:
