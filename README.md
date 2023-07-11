@@ -11,7 +11,7 @@ Experimental data sourced from ADNI datasets( https://adni.loni.usc.edu/).
 # Quick start (Train and Test)
 We provide the code for our model here (`Model.py`), and training and testing code（`main.py`). The specific model settings can be found in the article's documentation.
 We have provided a sample of preprocessed fMRI participant data in the Data folder (randomly generated using Python). Please replace it with real data for the actual experiment.
-Before training the model, please configure the dependencies in the `requirements.txt`.
+Before training the model, please configure the dependencies in the `requirements.txt`. Setting and modifying experimental parameters in `config.yaml`.
 You can run `main.py` to quickly train and test the program.
 
 
