@@ -6,7 +6,7 @@
 
 ![image](framework.png)
 This code is for the paper: Learning Asynchronous Common and Individual Functional Brain Network for AD Diagnosis. 
-We report the best performance on ADNI datasets( https://adni.loni.usc.edu/).
+Experimental data sourced from ADNI datasets( https://adni.loni.usc.edu/).
  
 # Quick start (Train and Test)
 We provide the code for our model here (`Model.py`), and training and testing code（`main.py`). The specific model settings can be found in the article's documentation.
