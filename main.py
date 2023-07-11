@@ -210,14 +210,11 @@ def main(args):
 
         print(args['dataset'], file=f)
         print(
-            "[ " + localtime + ' ] ' + 'SEN: {} Average: {:5.f} std: {:5.f}'.format(all_best_SEN, np.mean(all_best_SEN),
-                                                                                    (np.std(all_best_SEN))), file=f)
+            "[ " + localtime + ' ] ' + 'SEN: {} Average: {:.5f} std: {:.5f}'.format(all_best_SEN, np.mean(all_best_SEN),(np.std(all_best_SEN))), file=f)
         print(
-            "[ " + localtime + ' ] ' + 'SPE: {} Average: {:5.f} std: {:5.f}'.format(all_best_SPE, np.mean(all_best_SPE),
-                                                                                    (np.std(all_best_SPE))), file=f)
+            "[ " + localtime + ' ] ' + 'SPE: {} Average: {:.5f} std: {:.5f}'.format(all_best_SPE, np.mean(all_best_SPE), (np.std(all_best_SPE))), file=f)
         print(
-            "[ " + localtime + ' ] ' + 'AUC: {} Average: {:5.f} std: {:5.f}'.format(all_best_AUC, np.mean(all_best_AUC),
-                                                                                    (np.std(all_best_AUC))), file=f)
+            "[ " + localtime + ' ] ' + 'AUC: {} Average: {:.5f} std: {:.5f}'.format(all_best_AUC, np.mean(all_best_AUC),(np.std(all_best_AUC))), file=f)
 
 
 if __name__ == '__main__':
