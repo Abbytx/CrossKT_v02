@@ -103,6 +103,9 @@ def main(args):
         torch.cuda.set_device(args['gpu'])
         if os.path.exists("./check_points") is False:
             os.makedirs('./check_points')  # Save weights
+        if os.path.exists(args['work_dir']) is False:
+            os.makedirs(args['work_dir'])  # Save weights
+
 
         log_configuration(args, num_train, num_valid, args['config_128'])
 
